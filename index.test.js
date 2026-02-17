@@ -47,6 +47,46 @@ describe("sort", () => {
     });
   });
 
+  describe("edge cases — zero and boundary values", () => {
+    it("returns STANDARD for all zeros", () => {
+      assert.equal(sort(0, 0, 0, 0), "STANDARD");
+    });
+
+    it("returns SPECIAL for zero dimensions but heavy mass", () => {
+      assert.equal(sort(0, 0, 0, 20), "SPECIAL");
+    });
+  });
+
+  describe("edge cases — invalid inputs throw", () => {
+    it("throws on undefined", () => {
+      assert.throws(() => sort(undefined, 10, 10, 5), /finite non-negative/);
+    });
+
+    it("throws on null", () => {
+      assert.throws(() => sort(null, 10, 10, 5), /finite non-negative/);
+    });
+
+    it("throws on string", () => {
+      assert.throws(() => sort("200", 10, 10, 5), /finite non-negative/);
+    });
+
+    it("throws on negative dimension", () => {
+      assert.throws(() => sort(-1, 10, 10, 5), /finite non-negative/);
+    });
+
+    it("throws on negative mass", () => {
+      assert.throws(() => sort(10, 10, 10, -5), /finite non-negative/);
+    });
+
+    it("throws on Infinity", () => {
+      assert.throws(() => sort(Infinity, 10, 10, 5), /finite non-negative/);
+    });
+
+    it("throws on NaN", () => {
+      assert.throws(() => sort(NaN, 10, 10, 5), /finite non-negative/);
+    });
+  });
+
   describe("REJECTED — both bulky and heavy", () => {
     it("returns REJECTED when bulky by volume and heavy", () => {
       assert.equal(sort(100, 100, 100, 20), "REJECTED");
